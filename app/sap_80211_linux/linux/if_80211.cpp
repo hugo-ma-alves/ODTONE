@@ -433,6 +433,19 @@ int handle_nl_event(nl_msg *msg, void *arg)
 				mih::link_tuple_id lid;
 				lid.type = mih::link_type_802_11;
 				lid.addr = ctx->_mac;
+
+				boost::optional<mih::link_addr> old_router;
+				boost::optional<mih::link_addr> new_router;
+				boost::optional<bool> ip_renew;
+				boost::optional<mih::ip_mob_mgmt> mobility_management;
+
+				new_router = mih::mac_addr(m.attr_mac.get().c_str());
+
+				/*OR sending in only one TLV
+
+				mih::link_tuple_id lid;
+				lid.type = mih::link_type_802_11;
+				lid.addr = ctx->_mac;
 				lid.poa_addr = mih::mac_addr(m.attr_mac.get().c_str());
 
 				boost::optional<mih::link_addr> old_router;
@@ -440,8 +453,8 @@ int handle_nl_event(nl_msg *msg, void *arg)
 				boost::optional<bool> ip_renew;
 				boost::optional<mih::ip_mob_mgmt> mobility_management;
 
-				//The link sap icmp don't send this TLV field
-				//new_router = ctx->_mac;
+
+				*/
 
 				ctx->_ios.dispatch(boost::bind(ctx->_up_handler.get(), lid, old_router, new_router, ip_renew, mobility_management));
 			}
