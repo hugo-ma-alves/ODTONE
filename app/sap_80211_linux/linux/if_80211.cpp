@@ -476,13 +476,13 @@ int handle_nl_event(nl_msg *msg, void *arg)
 				
 				mih::link_tuple_id lid;
 				lid.type = mih::link_type_802_11;
-				lid.addr = mih::mac_addr(m.attr_mac.get().c_str());
+				lid.addr = ctx->_mac;
 
 				mih::link_dn_reason rs = mih::link_dn_reason(mih::link_dn_reason_explicit_disconnect);
 				// we have no idea...
 
 				boost::optional<mih::link_addr> old_router;
-				old_router = ctx->_mac;
+				old_router = mih::mac_addr(m.attr_mac.get().c_str());
 
 				ctx->_ios.dispatch(boost::bind(ctx->_down_handler.get(), lid, old_router, rs));
 			}
